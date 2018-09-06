@@ -24,10 +24,12 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    editor/highlighter.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    editor/highlighter.h
 
 FORMS += \
         mainwindow.ui

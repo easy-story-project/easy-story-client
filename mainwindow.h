@@ -16,6 +16,9 @@ public:
     ~MainWindow();
 
 private:
+    void setupEditor();
+
+private:
     Ui::MainWindow *ui;
 };
 
