@@ -4,6 +4,8 @@
 #include <QTextEdit>
 #include <QHBoxLayout>
 
+#include <QGraphicsTextItem>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -29,4 +31,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::setupEditor()
 {
+}
+
+void MainWindow::on_actiontest_triggered()
+{
+    QFont font("Monaco", 14);
+    QGraphicsTextItem* item = scene->addText("fuck", font);
+    item->setPos(0, 100);
 }

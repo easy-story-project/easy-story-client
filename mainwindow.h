@@ -19,6 +19,10 @@ public:
 private:
     void setupEditor();
 
+private slots:
+
+    void on_actiontest_triggered();
+
 private:
     Ui::MainWindow *ui;
     QGraphicsView* graphicsView;
