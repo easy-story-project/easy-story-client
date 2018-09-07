@@ -4,14 +4,18 @@
 #include <QObject>
 #include <QThreadPool>
 
-class ThreadCenter : public QObject
+class ThreadCenter
 {
-    Q_OBJECT
+private:
+    explicit ThreadCenter();
+
 public:
-    explicit ThreadCenter(QObject *parent = nullptr);
     static void init();
 
     static ThreadCenter* get();
+
+public:
+    void execute(QRunnable* task);
 
 signals:
 
@@ -21,5 +25,7 @@ private:
     QThreadPool pool;
     static ThreadCenter* sInstance;
 };
+
+
 
 #endif // THREADCENTER_H

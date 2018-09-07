@@ -1,21 +1,24 @@
 #include "threadcenter.h"
 
-ThreadCenter::ThreadCenter(QObject *parent)
-    : QObject(parent)
-{
+ThreadCenter* ThreadCenter::sInstance = nullptr;
 
+ThreadCenter::ThreadCenter()
+{
 }
 
 void ThreadCenter::init()
 {
-    ThreadCenter::get();
+    get();
 }
 
 ThreadCenter *ThreadCenter::get()
 {
-    if (sInstance == nullptr) {
+    if (sInstance == nullptr)
         sInstance = new ThreadCenter();
-    }
-
     return sInstance;
+}
+
+void ThreadCenter::execute(QRunnable *task)
+{
+    pool.tryStart(task);
 }
