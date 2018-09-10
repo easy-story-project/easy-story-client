@@ -1,27 +1,18 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
 #include <QLabel>
 #include <QTextEdit>
 #include <QHBoxLayout>
 
 #include <QGraphicsTextItem>
+#include <qevent.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    scene = new QGraphicsScene();
-    graphicsView = new QGraphicsView(scene);
-
-    QHBoxLayout *layout = new QHBoxLayout();
-    layout->addWidget(graphicsView);
-
-    QWidget *widget = new QWidget();
-    widget->setLayout(layout);
-
-    setCentralWidget(widget);
 }
 
 MainWindow::~MainWindow()
@@ -29,13 +20,18 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::setupEditor()
+void MainWindow::resizeEvent(QResizeEvent *event)
 {
+    QSize size = event->size();
+    ui->graphicsView->setGeometry(0, 0, size.width(), size.height());
 }
 
-void MainWindow::on_actiontest_triggered()
+void MainWindow::setupEditor()
 {
-    QFont font("Monaco", 14);
-    QGraphicsTextItem* item = scene->addText("fuck", font);
-    item->setPos(0, 100);
+
+}
+
+void MainWindow::on_btnCreateStory_clicked()
+{
+    ui->graphicsView->createNode();
 }

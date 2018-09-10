@@ -25,17 +25,21 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    editor/highlighter.cpp \
     model/story.cpp \
     thread/threadcenter.cpp \
-    task/filemonitor.cpp
+    task/filemonitor.cpp \
+    editor/storynode.cpp \
+    editor/storyview.cpp \
+    editor/storyscene.cpp
 
 HEADERS += \
         mainwindow.h \
-    editor/highlighter.h \
     model/story.h \
     thread/threadcenter.h \
-    task/filemonitor.h
+    task/filemonitor.h \
+    editor/storynode.h \
+    editor/storyview.h \
+    editor/storyscene.h
 
 FORMS += \
         mainwindow.ui

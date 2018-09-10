@@ -1,8 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "editor/storyview.h"
 #include <QMainWindow>
-#include <QGraphicsView>
 
 namespace Ui {
 class MainWindow;
@@ -14,19 +14,20 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    ~MainWindow() override;
+
+    void resizeEvent(QResizeEvent *event) override;
 
 private:
     void setupEditor();
 
 private slots:
-
-    void on_actiontest_triggered();
+    void on_btnCreateStory_clicked();
 
 private:
     Ui::MainWindow *ui;
-    QGraphicsView* graphicsView;
     QGraphicsScene* scene;
+
 };
 
 #endif // MAINWINDOW_H
