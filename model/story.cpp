@@ -1,4 +1,6 @@
 #include "story.h"
+#include "databases/database.h"
+
 #include <QtDebug>
 #include <QUuid>
 #include <QDir>
@@ -20,10 +22,6 @@ Story* Story::create(const QString& name)
     dir.cd("Projects");
     dir.mkdir(uuid);
     dir.cd(uuid);
-
-    QFile file(dir.path() + "/" + name + ".name");
-    file.open(QIODevice::ReadWrite);
-    file.close();
 
     Story* story = new Story(uuid, name, dir);
     return story;

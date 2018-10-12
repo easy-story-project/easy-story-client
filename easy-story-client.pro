@@ -31,7 +31,9 @@ SOURCES += \
     editor/storynode.cpp \
     editor/storyview.cpp \
     editor/storyscene.cpp \
-    dialogs/createstorydialog.cpp
+    dialogs/createstorydialog.cpp \
+    databases/database.cpp \
+    databases/exceptions/sqlcreatefailed.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -42,7 +44,9 @@ HEADERS += \
     editor/storyview.h \
     editor/storyscene.h \
     define.h \
-    dialogs/createstorydialog.h
+    dialogs/createstorydialog.h \
+    databases/database.h \
+    databases/exceptions/sqlcreatefailed.h
 
 FORMS += \
         mainwindow.ui \
