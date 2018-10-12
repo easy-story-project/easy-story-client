@@ -20,7 +20,7 @@ Database::Database() :
     QSqlQuery query;
     QStringList tables = sql.tables();
     if (!tables.contains("story")) {
-        query.prepare(QLatin1String("create table story (id integer primary key, uuid varchar, name varchar, created datetime)"));
+        query.prepare(QLatin1String("create table story (id integer primary key, uuid varchar, name varchar, path varchar, created datetime)"));
         if (!query.exec()) {
             qDebug() << tr("Table `story` Create failed:") << query.lastError();
         } else {

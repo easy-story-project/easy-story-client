@@ -1,3 +1,6 @@
 <RCC>
-    <qresource prefix="/"/>
+    <qresource prefix="/">
+        <file>sqls/sql_create</file>
+    </qresource>
+    <qresource prefix="/sqls"/>
 </RCC>
