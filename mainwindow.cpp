@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "define.h"
+#include "dialogs/createstorydialog.h"
 
 #include <QLabel>
 #include <QTextEdit>
@@ -7,12 +9,24 @@
 
 #include <QGraphicsTextItem>
 #include <qevent.h>
+#include <QtDebug>
+#include <QMessageBox>
+#include <QPlainTextEdit>
+#include <QDateTime>
+#include <QDir>
+#include <QSettings>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    createStoryDlg(new CreateStoryDialog()),
+    story(nullptr),
+    pSetting(nullptr)
 {
     ui->setupUi(this);
+    setupEditor();
+    loadSetting();
+    createStory();
 }
 
 MainWindow::~MainWindow()
@@ -20,18 +34,73 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::setupEditor()
+{
+    connect(ui->editor, &QPlainTextEdit::textChanged, this, &MainWindow::textChanged);
+    connect(createStoryDlg, &CreateStoryDialog::sendName, this, &MainWindow::receiveStoryName);
+}
+
+void MainWindow::loadSetting()
+{
+    settingPath = QDir::currentPath() + "/setting.ini";
+    QFile file(settingPath);
+
+    if (!file.exists()) {
+        file.open(QIODevice::ReadWrite);
+        file.close();
+    }
+
+    pSetting = new QSettings(settingPath, QSettings::IniFormat);
+}
+
+void MainWindow::createStory()
+{
+    if (pSetting->contains(BASE_PROJECT_UUID)) {
+        QString name = pSetting->value(BASE_PROJECT_NAME).toString();
+        story = Story::create(name);
+    } else {
+        createStoryDlg->show();
+    }
+}
+
+void MainWindow::receiveStoryName(QString name)
+{
+    story = Story::create(name);
+    pSetting->setValue(BASE_PROJECT_NAME, story->getName().toUtf8());
+    pSetting->setValue(BASE_PROJECT_UUID, story->getUUID());
+}
+
+void MainWindow::textChanged()
+{
+    QTextDocument* doc = ui->editor->document();
+    QString html = doc->toPlainText();
+    int count = grabChineseCount(html);
+    ui->labelCount->setText(QString().sprintf("%d 字", count));
+}
+
+
+int MainWindow::grabChineseCount(QString str) {
+    str = str.replace('\n', "");
+    str = str.trimmed();
+    QRegExp rx = QRegExp("[\\x4e00-\\x9fa5]+");
+
+    int count = 0;
+    int lo = 0;
+    int hi = str.count() - 1;
+
+    while (lo <= hi) {
+        QString startStr = str.at(lo++);
+        QString endStr = str.at(hi--);
+
+        if (startStr.contains(rx)) count++;
+        if (endStr.contains(rx)) count++;
+    }
+
+    return count;
+}
+
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
     QSize size = event->size();
-    ui->graphicsView->setGeometry(0, 0, size.width(), size.height());
-}
-
-void MainWindow::setupEditor()
-{
-
-}
-
-void MainWindow::on_btnCreateStory_clicked()
-{
-    ui->graphicsView->createNode();
+    ui->gridLayoutWidget->setGeometry(QRect(QPoint(), size));
 }

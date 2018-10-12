@@ -2,7 +2,11 @@
 #define MAINWINDOW_H
 
 #include "editor/storyview.h"
+#include "dialogs/createstorydialog.h"
+#include "model/story.h"
+
 #include <QMainWindow>
+#include <QSettings>
 
 namespace Ui {
 class MainWindow;
@@ -20,14 +24,20 @@ public:
 
 private:
     void setupEditor();
+    void loadSetting();
+    void createStory();
+    int grabChineseCount(QString str);
 
 private slots:
-    void on_btnCreateStory_clicked();
-
+    void textChanged();
+    void receiveStoryName(QString name);
 private:
     Ui::MainWindow *ui;
-    QGraphicsScene* scene;
+    QString settingPath;
+    CreateStoryDialog* createStoryDlg;
+    Story* story;
 
+    QSettings* pSetting;
 };
 
 #endif // MAINWINDOW_H

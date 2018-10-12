@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets
+QT       += core gui widgets sql
 
 TARGET = easy-story-client
 TEMPLATE = app
@@ -30,7 +30,8 @@ SOURCES += \
     task/filemonitor.cpp \
     editor/storynode.cpp \
     editor/storyview.cpp \
-    editor/storyscene.cpp
+    editor/storyscene.cpp \
+    dialogs/createstorydialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -39,12 +40,18 @@ HEADERS += \
     task/filemonitor.h \
     editor/storynode.h \
     editor/storyview.h \
-    editor/storyscene.h
+    editor/storyscene.h \
+    define.h \
+    dialogs/createstorydialog.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    dialogs/createstorydialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    res.qrc
