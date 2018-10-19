@@ -7,3 +7,9 @@
 #define DB_TABLE_STORY "story";
 
 #endif // SETTINGDEFINE_H
+
+
+
+
+
+
