@@ -33,7 +33,11 @@ SOURCES += \
     editor/storyscene.cpp \
     dialogs/createstorydialog.cpp \
     databases/database.cpp \
-    databases/exceptions/sqlcreatefailed.cpp
+    databases/exceptions/sqlcreatefailed.cpp \
+    model/actor.cpp \
+    task/filesave.cpp \
+    dialogs/createactordialog.cpp \
+    model/chinesenamebuilder.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -46,11 +50,16 @@ HEADERS += \
     define.h \
     dialogs/createstorydialog.h \
     databases/database.h \
-    databases/exceptions/sqlcreatefailed.h
+    databases/exceptions/sqlcreatefailed.h \
+    model/actor.h \
+    task/filesave.h \
+    dialogs/createactordialog.h \
+    model/chinesenamebuilder.h
 
 FORMS += \
         mainwindow.ui \
-    dialogs/createstorydialog.ui
+    dialogs/createstorydialog.ui \
+    dialogs/createactordialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

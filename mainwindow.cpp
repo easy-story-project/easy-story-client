@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "define.h"
-#include "dialogs/createstorydialog.h"
+
 
 #include <QLabel>
 #include <QTextEdit>
@@ -20,10 +20,12 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     createStoryDlg(new CreateStoryDialog()),
+    createActorDlg(new CreateActorDialog()),
     story(nullptr),
     pSetting(nullptr)
 {
     ui->setupUi(this);
+    createActions();
     setupEditor();
     loadSetting();
     createStory();
@@ -38,6 +40,18 @@ void MainWindow::setupEditor()
 {
     connect(ui->editor, &QPlainTextEdit::textChanged, this, &MainWindow::textChanged);
     connect(createStoryDlg, &CreateStoryDialog::sendName, this, &MainWindow::receiveStoryName);
+}
+
+void MainWindow::createActions()
+{
+    const QIcon newIcon = QIcon::fromTheme("document-new", QIcon(":/res/images/createActor.png"));
+    QAction *actCreateActor = new QAction(newIcon, tr("&创建角色"), this);
+    actCreateActor->setShortcuts(QKeySequence::New);
+    actCreateActor->setStatusTip(tr("创建一个新的角色"));
+    connect(actCreateActor, &QAction::triggered, this, &MainWindow::createActor);
+    ui->mainToolBar->addAction(actCreateActor);
+
+    ui->mainToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 }
 
 void MainWindow::loadSetting()
@@ -57,7 +71,8 @@ void MainWindow::createStory()
 {
     if (pSetting->contains(BASE_PROJECT_UUID)) {
         QString name = pSetting->value(BASE_PROJECT_NAME).toString();
-        story = Story::create(name);
+        QString uuid = pSetting->value(BASE_PROJECT_UUID).toString();
+        story = Story::load(uuid, name);
     } else {
         createStoryDlg->show();
     }
@@ -66,8 +81,13 @@ void MainWindow::createStory()
 void MainWindow::receiveStoryName(QString name)
 {
     story = Story::create(name);
-    pSetting->setValue(BASE_PROJECT_NAME, story->getName().toUtf8());
+    pSetting->setValue(BASE_PROJECT_NAME, story->getName());
     pSetting->setValue(BASE_PROJECT_UUID, story->getUUID());
+}
+
+void MainWindow::createActor()
+{
+    createActorDlg->show();
 }
 
 void MainWindow::textChanged()

@@ -3,6 +3,7 @@
 
 #include "editor/storyview.h"
 #include "dialogs/createstorydialog.h"
+#include "dialogs/createactordialog.h"
 #include "model/story.h"
 
 #include <QMainWindow>
@@ -28,13 +29,18 @@ private:
     void createStory();
     int grabChineseCount(QString str);
 
+    void createActions();
+
 private slots:
     void textChanged();
     void receiveStoryName(QString name);
+    void createActor();
+
 private:
     Ui::MainWindow *ui;
     QString settingPath;
     CreateStoryDialog* createStoryDlg;
+    CreateActorDialog* createActorDlg;
     Story* story;
 
     QSettings* pSetting;

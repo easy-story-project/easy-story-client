@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>sqls/sql_create</file>
+        <file>res/images/createActor.png</file>
     </qresource>
     <qresource prefix="/sqls"/>
 </RCC>

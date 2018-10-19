@@ -23,8 +23,17 @@ Story* Story::create(const QString& name)
     dir.mkdir(uuid);
     dir.cd(uuid);
 
-    Story* story = new Story(uuid, name, dir);
-    return story;
+    return new Story(uuid, name, dir);
+}
+
+Story *Story::load(const QString &uuid, const QString &name)
+{
+    QDir dir = QDir::currentPath();
+    dir.mkdir("Projects");
+    dir.cd("Projects");
+    dir.mkdir(uuid);
+    dir.cd(uuid);
+    return new Story(uuid, name, dir);
 }
 
 void Story::setDir(QDir dir)

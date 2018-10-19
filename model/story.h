@@ -3,6 +3,9 @@
 
 #include <QObject>
 #include <QDir>
+#include <QVector>
+
+#include "actor.h"
 
 class Story : public QObject
 {
@@ -11,7 +14,7 @@ public:
     explicit Story(const QString& uuid, const QString& name, const QDir& dir);
 
     static Story* create(const QString& name);
-    static Story* load(const QString& name);
+    static Story* load(const QString& uuid, const QString& name);
 public:
     void setDir(QDir dir);
     QString getUUID();
@@ -24,6 +27,8 @@ private:
     QString uuid;
     QString name;
     QDir dir;
+
+    QVector<Actor*> actors;
 };
 
 #endif // STORY_H
