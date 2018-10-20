@@ -12,6 +12,9 @@ class Database : public QObject
 public:
     static Database* get();
     static void init();
+
+    void upgrade();
+
 private:
     explicit Database();
 

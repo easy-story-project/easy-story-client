@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
     try {
         ThreadCenter::init();
         Database::init();
+        Database::get()->upgrade();
     } catch (SqlCreateFailed& e) {
         qDebug() << "Sql create Failed: " << e.what();
         exit(0);

@@ -2,6 +2,7 @@
 #include <QtDebug>
 #include <QFile>
 #include <QRandomGenerator>
+#include <QDateTime>
 
 ChineseNameBuilder::ChineseNameBuilder(bool sw, bool singleName, bool boy):QObject(nullptr),
     singleXing(sw),
@@ -62,17 +63,20 @@ ChineseNameBuilder::ChineseNameBuilder(bool sw, bool singleName, bool boy):QObje
 
 const QString ChineseNameBuilder::build()
 {
-    QFile file(singleXing ? "://res/strings/xingS" : "://res/strings/xingD");
-    if (!file.open(QIODevice::ReadOnly)) {
-        return "";
-    }
+//    QFile file(singleXing ? "://res/strings/xingS" : "://res/strings/xingD");
+//    if (!file.open(QIODevice::ReadOnly)) {
+//        return "";
+//    }
 
-    QTextStream in(&file);
-    QString xing = in.readAll();
-    QRandomGenerator rand(0);
-    quint32 i = rand.generate();
-    QString randXing = xing.at(i);
+//    QTextStream in(&file);
+//    QString xing = in.readAll();
 
-    return randXing;
+//    qint64 time = QDateTime::currentDateTime().toMSecsSinceEpoch();
+//    QRandomGenerator rand(static_cast<quint32>(time));
+//    int i = static_cast<int>(rand.generate());
+//    QString randXing = xing.at(i);
+
+//    return randXing;
+    return "undefined";
 }
 

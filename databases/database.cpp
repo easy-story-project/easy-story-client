@@ -43,6 +43,30 @@ Database::Database() :
     }
 }
 
+void Database::upgrade()
+{
+    QSqlQuery query;
+    query.exec("SELECT word_key FROM name_build");
+    int size = query.size();
+    qDebug() << "upgrade:" << size;
+
+    if (size <= 0) {
+        QDir dir("://res/sqls/insert");
+        QFileInfoList files = dir.entryInfoList();
+        for (QFileInfo file : files) {
+            qDebug() << file.filePath();
+            QFile sql(file.filePath());
+            if (!sql.open(QIODevice::ReadOnly)) {
+                continue;
+            }
+
+            QTextStream in(&sql);
+            QString str = in.readAll();
+            if(!query.exec(str)) qDebug() << str << "初始化数据失败!!\n";
+        }
+    }
+}
+
 Database *Database::get()
 {
     if (sInstance == nullptr)
@@ -55,3 +79,5 @@ void Database::init()
 {
     get();
 }
+
+
