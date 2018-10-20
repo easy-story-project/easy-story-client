@@ -47,7 +47,7 @@ void MainWindow::createActions()
     const QIcon newIcon = QIcon::fromTheme("document-new", QIcon(":/res/images/createActor.png"));
     QAction *actCreateActor = new QAction(newIcon, tr("&创建角色"), this);
     actCreateActor->setShortcuts(QKeySequence::New);
-    actCreateActor->setStatusTip(tr("创建一个新的角色"));
+    actCreateActor->setStatusTip(tr("Create new actor"));
     connect(actCreateActor, &QAction::triggered, this, &MainWindow::createActor);
     ui->mainToolBar->addAction(actCreateActor);
 
@@ -95,7 +95,7 @@ void MainWindow::textChanged()
     QTextDocument* doc = ui->editor->document();
     QString html = doc->toPlainText();
     int count = grabChineseCount(html);
-    ui->labelCount->setText(QString().sprintf("%d 字", count));
+    ui->labelCount->setText(QString().sprintf("%d Word", count));
 }
 
 

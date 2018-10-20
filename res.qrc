@@ -1,6 +1,11 @@
 <RCC>
     <qresource prefix="/">
         <file>res/images/createActor.png</file>
+        <file>res/sqls/create/name_build</file>
+        <file>res/sqls/create/worlds</file>
+        <file>res/strings/name_word_boy</file>
+        <file>res/strings/name_word_gril</file>
+        <file>res/strings/xingD</file>
+        <file>res/strings/xingS</file>
     </qresource>
-    <qresource prefix="/sqls"/>
 </RCC>

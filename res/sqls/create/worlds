@@ -1,0 +1,7 @@
+CREATE TABLE worlds (
+    id      INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,
+    uuid    STRING UNIQUE NOT NULL,
+    name    STRING,
+    type    INTEGER,
+    created DATETIME
+);

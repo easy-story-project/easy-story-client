@@ -1,0 +1,6 @@
+CREATE TABLE name_build (
+    id       INTEGER PRIMARY KEY AUTOINCREMENT,
+    gender   INTEGER NOT NULL,
+    word_key STRING  NOT NULL,
+    words    STRING  NOT NULL
+);
