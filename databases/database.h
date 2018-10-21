@@ -18,7 +18,13 @@ public:
 private:
     explicit Database();
 
+private:
+    void buildNameTable();
+
 signals:
+    void signalDBInitBegin();
+    void signalDBInitDone();
+    void signalBuileDB(qreal progress);
 
 public slots:
 

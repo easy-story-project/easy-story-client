@@ -35,6 +35,7 @@ private slots:
     void textChanged();
     void receiveStoryName(QString name);
     void createActor();
+    void slotDBInitBegin();
 
 private:
     Ui::MainWindow *ui;

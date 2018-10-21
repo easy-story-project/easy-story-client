@@ -43,28 +43,58 @@ Database::Database() :
     }
 }
 
-void Database::upgrade()
+void Database::buildNameTable()
 {
+    QSqlQueryModel model;
+    model.setQuery("SELECT word_key FROM name_build");
+    int rowCount = model.rowCount();
+
     QSqlQuery query;
     query.exec("SELECT word_key FROM name_build");
+    int rows = query.numRowsAffected();
     int size = query.size();
-    qDebug() << "upgrade:" << size;
-
-    if (size <= 0) {
-        QDir dir("://res/sqls/insert");
-        QFileInfoList files = dir.entryInfoList();
-        for (QFileInfo file : files) {
-            qDebug() << file.filePath();
-            QFile sql(file.filePath());
-            if (!sql.open(QIODevice::ReadOnly)) {
-                continue;
-            }
-
-            QTextStream in(&sql);
-            QString str = in.readAll();
-            if(!query.exec(str)) qDebug() << str << "初始化数据失败!!\n";
-        }
+    if (size > 0) {
+        qDebug() << "数据库已初始化..";
+        return;
     }
+
+    emit signalDBInitBegin();
+    qDebug() << "初始化数据库.." << rows;
+
+    QDir dir("://res/sqls/insert");
+    QFileInfoList files = dir.entryInfoList();
+    for (QFileInfo file : files) {
+        qDebug() << "开始导入文件: " << file.filePath();
+        QFile sql(file.filePath());
+        if (!sql.open(QIODevice::ReadOnly|QIODevice::Text)) {
+            continue;
+        }
+
+        QTextStream in(&sql);
+        in.setCodec("UTF-8");
+
+        int count = 0;
+        int failed = 0;
+        while (!in.atEnd()) {
+            QString str = in.readLine();
+            if(!query.exec(str)) {
+                qDebug() << str << "初始化数据失败!!\n";
+                failed++;
+            } else {
+                count++;
+            }
+        }
+
+        qDebug() << file.filePath() << "Done!! count:" << count << "failed:" << failed;
+    }
+
+    emit signalDBInitDone();
+}
+
+void Database::upgrade()
+{
+
+    buildNameTable();
 }
 
 Database *Database::get()

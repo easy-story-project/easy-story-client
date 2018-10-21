@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "define.h"
-
+#include "databases/database.h"
 
 #include <QLabel>
 #include <QTextEdit>
@@ -40,6 +40,7 @@ void MainWindow::setupEditor()
 {
     connect(ui->editor, &QPlainTextEdit::textChanged, this, &MainWindow::textChanged);
     connect(createStoryDlg, &CreateStoryDialog::sendName, this, &MainWindow::receiveStoryName);
+    connect(Database::get(), &Database::signalDBInitBegin, this, &MainWindow::slotDBInitBegin);
 }
 
 void MainWindow::createActions()
@@ -88,6 +89,11 @@ void MainWindow::receiveStoryName(QString name)
 void MainWindow::createActor()
 {
     createActorDlg->show();
+}
+
+void MainWindow::slotDBInitBegin()
+{
+
 }
 
 void MainWindow::textChanged()

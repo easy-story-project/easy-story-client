@@ -76,4 +76,5 @@ DISTFILES += \
     res/sqls/create_table_name_build \
     res/sqls/insert/name_build \
     res/strings/xingS \
-    res/strings/xingD
+    res/strings/xingD \
+    res/sqls/create/setup
