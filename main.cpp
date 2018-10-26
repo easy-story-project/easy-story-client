@@ -20,10 +20,6 @@ int main(int argc, char *argv[])
         exit(0);
     }
 
-    ChineseNameBuilder builder(true, true, true);
-    QString name = builder.build();
-    qDebug() << name;
-
     MainWindow w;
     w.show();
 

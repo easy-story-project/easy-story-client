@@ -1,9 +1,9 @@
 #include "database.h"
 
 #include "exceptions/sqlcreatefailed.h"
+#include "define.h"
 
 #include <QtDebug>
-
 
 Database* Database::sInstance = nullptr;
 
@@ -19,14 +19,15 @@ Database::Database() :
 
     QSqlQuery query;
     QStringList tables = sql.tables();
-    if (tables.contains("worlds") && tables.contains("name_build")) {
-        return ;
-    }
 
     QDir dir("://res/sqls/create");
     QFileInfoList files = dir.entryInfoList();
     for (QFileInfo file : files) {
-        qDebug() << file.filePath();
+        qDebug() << "Create Table " << file.fileName() << "...";
+        QString tableName = file.fileName();
+        if (tables.contains(tableName))
+            continue;
+
         QFile sqlFile(file.filePath());
         if (!sqlFile.open(QIODevice::ReadOnly)) {
             throw new SqlCreateFailed("cannot open sql:" + file.fileName());
@@ -39,31 +40,25 @@ Database::Database() :
         if (!query.exec()) {
             throw new SqlCreateFailed("cannot open sql:" + file.fileName());
         }
-        qInfo() << str << " OK";
+        qInfo() << "Create Table " << file.fileName() << " OK";
     }
 }
 
 void Database::buildNameTable()
 {
-    QSqlQueryModel model;
-    model.setQuery("SELECT word_key FROM name_build");
-    int rowCount = model.rowCount();
+    qDebug() << "初始化数据库..";
+    emit signalDBInitBegin();
 
-    QSqlQuery query;
-    query.exec("SELECT word_key FROM name_build");
-    int rows = query.numRowsAffected();
-    int size = query.size();
-    if (size > 0) {
-        qDebug() << "数据库已初始化..";
+    QString tableName = "name_build";
+    if (checkInitialStatus(tableName)) {
+        qDebug() << "name_build" << tr(" 数据库已初始化..");
         return;
     }
-
-    emit signalDBInitBegin();
-    qDebug() << "初始化数据库.." << rows;
 
     QDir dir("://res/sqls/insert");
     QFileInfoList files = dir.entryInfoList();
     for (QFileInfo file : files) {
+
         qDebug() << "开始导入文件: " << file.filePath();
         QFile sql(file.filePath());
         if (!sql.open(QIODevice::ReadOnly|QIODevice::Text)) {
@@ -75,6 +70,8 @@ void Database::buildNameTable()
 
         int count = 0;
         int failed = 0;
+        QSqlQuery query;
+
         while (!in.atEnd()) {
             QString str = in.readLine();
             if(!query.exec(str)) {
@@ -86,14 +83,32 @@ void Database::buildNameTable()
         }
 
         qDebug() << file.filePath() << "Done!! count:" << count << "failed:" << failed;
+        emit signalDBInitDone(file.fileName());
     }
 
-    emit signalDBInitDone();
+    setInitialStatus(tableName);
+}
+
+bool Database::checkInitialStatus(QString table)
+{
+    QSqlQueryModel model;
+    QString sql = QString("SELECT * FROM setup WHERE name='%1'").arg(table);
+    model.setQuery(sql);
+    int rows = model.rowCount();
+    return rows > 0;
+}
+
+void Database::setInitialStatus(QString table)
+{
+    QSqlTableModel model;
+    model.setTable("setup");
+    QSqlRecord record = model.record();
+    record.setValue("name", table);
+    model.insertRecord(model.rowCount(), record);
 }
 
 void Database::upgrade()
 {
-
     buildNameTable();
 }
 

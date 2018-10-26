@@ -15,6 +15,7 @@
 #include <QDateTime>
 #include <QDir>
 #include <QSettings>
+#include <QPushButton>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -22,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     createStoryDlg(new CreateStoryDialog()),
     createActorDlg(new CreateActorDialog()),
     story(nullptr),
-    pSetting(nullptr)
+    setting(nullptr)
 {
     ui->setupUi(this);
     createActions();
@@ -40,7 +41,9 @@ void MainWindow::setupEditor()
 {
     connect(ui->editor, &QPlainTextEdit::textChanged, this, &MainWindow::textChanged);
     connect(createStoryDlg, &CreateStoryDialog::sendName, this, &MainWindow::receiveStoryName);
+    connect(createActorDlg, &CreateActorDialog::createdActor, this, &MainWindow::createdActor);
     connect(Database::get(), &Database::signalDBInitBegin, this, &MainWindow::slotDBInitBegin);
+    connect(Database::get(), &Database::signalDBInitDone, this, &MainWindow::slotDBInitDone);
 }
 
 void MainWindow::createActions()
@@ -65,15 +68,18 @@ void MainWindow::loadSetting()
         file.close();
     }
 
-    pSetting = new QSettings(settingPath, QSettings::IniFormat);
+    setting = new QSettings(settingPath, QSettings::IniFormat);
 }
 
 void MainWindow::createStory()
 {
-    if (pSetting->contains(BASE_PROJECT_UUID)) {
-        QString name = pSetting->value(BASE_PROJECT_NAME).toString();
-        QString uuid = pSetting->value(BASE_PROJECT_UUID).toString();
+    if (setting->contains(BASE_PROJECT_UUID)) {
+        QString name = setting->value(BASE_PROJECT_NAME).toString();
+        QString uuid = setting->value(BASE_PROJECT_UUID).toString();
         story = Story::load(uuid, name);
+
+//        for (Actor* actor : story->actors) {
+//        }
     } else {
         createStoryDlg->show();
     }
@@ -82,8 +88,8 @@ void MainWindow::createStory()
 void MainWindow::receiveStoryName(QString name)
 {
     story = Story::create(name);
-    pSetting->setValue(BASE_PROJECT_NAME, story->getName());
-    pSetting->setValue(BASE_PROJECT_UUID, story->getUUID());
+    setting->setValue(BASE_PROJECT_NAME, story->getName());
+    setting->setValue(BASE_PROJECT_UUID, story->getUUID());
 }
 
 void MainWindow::createActor()
@@ -94,6 +100,17 @@ void MainWindow::createActor()
 void MainWindow::slotDBInitBegin()
 {
 
+}
+
+void MainWindow::slotDBInitDone(QString table)
+{
+    setting->setValue(SQL_SETUP + table, true);
+}
+
+void MainWindow::createdActor(Actor *actor)
+{
+    story->addActor(actor);
+    story->save();
 }
 
 void MainWindow::textChanged()

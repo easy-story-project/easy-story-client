@@ -20,10 +20,12 @@ private:
 
 private:
     void buildNameTable();
+    bool checkInitialStatus(QString table);
+    void setInitialStatus(QString table);
 
 signals:
     void signalDBInitBegin();
-    void signalDBInitDone();
+    void signalDBInitDone(QString table);
     void signalBuileDB(qreal progress);
 
 public slots:

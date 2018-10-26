@@ -20,6 +20,14 @@ public:
     QString getUUID();
     QString getName();
 
+    void addActor(Actor* ac);
+
+    void save();
+    void load();
+
+    friend QDataStream& operator<<(QDataStream&, const Story&);
+    friend QDataStream& operator>>(QDataStream&, Story&);
+
 public slots:
     void setName(QString name);
 
@@ -28,6 +36,7 @@ private:
     QString name;
     QDir dir;
 
+public:
     QVector<Actor*> actors;
 };
 

@@ -48,7 +48,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QCheckBox" name="checkBox">
+  <widget class="QCheckBox" name="cbLead">
    <property name="geometry">
     <rect>
      <x>170</x>
@@ -79,7 +79,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QCheckBox" name="checkBox_2">
+     <widget class="QCheckBox" name="cbMan">
       <property name="text">
        <string>男</string>
       </property>
@@ -92,7 +92,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QCheckBox" name="checkBox_3">
+     <widget class="QCheckBox" name="cbWoman">
       <property name="text">
        <string>女</string>
       </property>
@@ -102,6 +102,19 @@
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>570</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>OK</string>
+   </property>
   </widget>
  </widget>
  <resources/>

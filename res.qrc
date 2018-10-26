@@ -7,7 +7,7 @@
         <file>res/strings/name_word_gril</file>
         <file>res/strings/xingD</file>
         <file>res/strings/xingS</file>
-        <file>res/sqls/insert/name_girl.sql</file>
-        <file>res/sqls/insert/name_man.sql</file>
+        <file>res/sqls/insert/name_build</file>
+        <file>res/sqls/create/setup</file>
     </qresource>
 </RCC>

@@ -36,6 +36,8 @@ private slots:
     void receiveStoryName(QString name);
     void createActor();
     void slotDBInitBegin();
+    void slotDBInitDone(QString table);
+    void createdActor(Actor* actor);
 
 private:
     Ui::MainWindow *ui;
@@ -44,7 +46,7 @@ private:
     CreateActorDialog* createActorDlg;
     Story* story;
 
-    QSettings* pSetting;
+    QSettings* setting;
 };
 
 #endif // MAINWINDOW_H
